@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Profile notification client
+    </title>
+</head>
+<body>
+<script>
+  var evtSource = new EventSource("/api/v1/info/[[${user}]]");
+    evtSource.onmessage = function(e) {
+        document.getElementById("stat").innerHTML = ''
+        var list = JSON.parse(e.data);
+        for (var l of list) {
+            for (var uc of l) {
+            var p = document.createElement("p");
+            var text = document.createTextNode(uc.user + " change title: " + uc.title + " at " + uc.timestamp);
+            p.appendChild(text);
+                document.getElementById("stat").appendChild(p);
+            }
+        }
+
+    };
+</script>
+<div id="stat"></div>
+</body>
+</html>

@@ -4,18 +4,30 @@ plugins {
 	id 'java'
 }
 
+wrapper {
+	gradleVersion '7.3'
+}
+
 group = 'com.reactLab'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = "16"
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+	implementation 'org.springframework.data:spring-data-commons'
+	implementation('org.springframework.data:spring-data-jdbc')
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	runtimeOnly 'io.r2dbc:r2dbc-postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'com.h2database:h2'
 
+	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+	annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
@@ -27,3 +39,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_16

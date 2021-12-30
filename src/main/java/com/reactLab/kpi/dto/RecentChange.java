@@ -1,5 +1,6 @@
-package com.reactLab.kpi.configs;
+package com.reactLab.kpi.dto;
 
+import com.reactLab.kpi.dto.Meta;
 import lombok.Data;
 
 @Data

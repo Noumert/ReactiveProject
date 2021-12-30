@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Profile notification client
+    </title>
+</head>
+<body>
+<script>
+  var evtSource = new EventSource("/api/v1/info/mostActive/[[${days}]]");
+    evtSource.onmessage = function(e) {
+        var user = JSON.parse(e.data);
+        console.log(e.data);
+            document.getElementById("stat").textContent =
+            "Most active during last [[${days}]] days user is " + user.user + " with " + user.changes + " changes";
+    };
+</script>
+<h3>Top1</h3>
+<div id="stat"></div>
+</body>
+</html>

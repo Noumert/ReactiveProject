@@ -1,40 +1,38 @@
 package com.reactLab.kpi.hello;
 
+import com.reactLab.kpi.entity.RecentChangeEntry;
+import com.reactLab.kpi.repository.RecentChangeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GreetingRouterTest {
 
     @Autowired
-    private WebTestClient webTestClient;
-    @Autowired
-    private GreetingClient greetingClient;
+    RecentChangeRepository repository;
 
     @Test
     public void testHello() {
-        webTestClient
-                .get().uri("/hello")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                // and use the dedicated DSL to test assertions against the response
-                .expectStatus().isOk()
-                .expectBody(Greeting.class).value(greeting -> {
-                    assertThat(greeting.getMessage()).isEqualTo("Hello, Spring!");
-                });
+       RecentChangeEntry recentChangeEntry = new RecentChangeEntry("test","test", Timestamp.valueOf(LocalDateTime.now()));
+//        repository
+//                .deleteAll()
+//                .subscribe(result -> System.out.println(("Entity has been saved: " + result)));
+       repository.findAll().subscribe(System.out::println,(error)->{},()-> System.out.println("all good"));
     }
 
-    @Test
-    public void testClient() {
-        System.out.println("Hello");
-        System.out.println(greetingClient.getMessage());
-    }
 }

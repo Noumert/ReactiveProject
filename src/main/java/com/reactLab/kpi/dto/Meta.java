@@ -1,4 +1,4 @@
-package com.reactLab.kpi.configs;
+package com.reactLab.kpi.dto;
 
 import lombok.Data;
 
