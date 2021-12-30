@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Profile notification client
+    </title>
+</head>
+<body>
+<script>
+var i = 1
+  var evtSource = new EventSource("/api/v1/info/mostPopularTitles");
+
+    evtSource.onmessage = function(e) {
+        document.getElementById("stat").innerHTML = '';
+        var list = JSON.parse(e.data);
+            for (var mpt of list) {
+            var p = document.createElement("p");
+            var text = document.createTextNode("title: " + mpt.title + " was changed " + mpt.changes + " times");
+            p.appendChild(text);
+            document.getElementById("stat").appendChild(p);
+            }
+    };
+</script>
+<div id="stat"></div>
+</body>
+</html>

@@ -1,12 +1,15 @@
 package com.reactLab.kpi.service;
 
 import com.reactLab.kpi.dto.MostActiveDto;
+import com.reactLab.kpi.dto.MostPopularTitleDto;
 import com.reactLab.kpi.entity.RecentChangeEntry;
 import com.reactLab.kpi.repository.RecentChangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 
 @Service
@@ -31,7 +34,15 @@ public class RecentChangeService implements RecentChangeServiceApi {
     }
 
     @Override
+    public Mono<List<MostPopularTitleDto>> findMostPopularTitles() {
+        return recentChangeRepository.findMostPopularTitles()
+                .limitRate(10).collectList();
+    }
+
+    @Override
     public Mono<Void> deleteAll() {
         return recentChangeRepository.deleteAll();
     }
+
+
 }

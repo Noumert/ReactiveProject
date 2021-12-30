@@ -1,6 +1,7 @@
 package com.reactLab.kpi.service;
 
 import com.reactLab.kpi.dto.MostActiveDto;
+import com.reactLab.kpi.dto.MostPopularTitleDto;
 import com.reactLab.kpi.dto.RecentChange;
 import com.reactLab.kpi.dto.UserInfo;
 import com.reactLab.kpi.entity.RecentChangeEntry;
@@ -13,7 +14,7 @@ import reactor.util.retry.Retry;
 
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -74,17 +75,15 @@ public class WikiStatService implements WikiStatServiceApi {
                 });
     }
 
-
-//    public Flux<RecentChange> getRecentChanges(String user) {
-//        return  webClient.get()
-//                .uri("https://stream.wikimedia.org/v2/stream/recentchange")
-//                .retrieve()
-//                .bodyToFlux(RecentChange.class)
-//                .filter(Objects::nonNull)
-//                .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofMillis(500)))
-//                .filter(r -> Objects.equals(r.getUser(), user))
-//                .onErrorContinue((t, e) -> {
-//                    log.warn("OK error {}",t.getClass());
-//                });
-//    }
+    @Override
+    public Flux<List<MostPopularTitleDto>> mostPopularTitles(Flux<RecentChange> changesDuringDay) {
+        return changesDuringDay
+//                .filter(r -> r.getMeta().getDt().isAfter(ZonedDateTime.now().minusDays(days)))
+                .flatMap(r -> recentChangeServiceApi.save(new RecentChangeEntry(r.getUser(), r.getTitle()
+                        , Timestamp.valueOf(r.getMeta().getDt().toLocalDateTime()))))
+                .onBackpressureLatest()
+                .concatMap(e -> recentChangeServiceApi.findMostPopularTitles(), 1)
+                .onErrorContinue((t, e) -> {
+                });
+    }
 }

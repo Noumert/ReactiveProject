@@ -70,4 +70,10 @@ public class InfoResource {
         return wikiStatServiceApi.mostActiveUser(recentChangesDayStream,days).replay(30)
                 .autoConnect(0);
     }
+
+    @GetMapping(value = "/mostPopularTitles", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<?> mostPopularTitlesStream() {
+        return wikiStatServiceApi.mostPopularTitles(recentChangesDayStream).replay(30)
+                .autoConnect(0);
+    }
 }

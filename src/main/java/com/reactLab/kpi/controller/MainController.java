@@ -28,4 +28,9 @@ public class MainController {
         model.addAttribute("days", days);
         return "mostActive";
     }
+
+    @GetMapping(value = "/mostPopularTitles")
+    public String recentUser(){
+        return "mostPopularTitles";
+    }
 }
