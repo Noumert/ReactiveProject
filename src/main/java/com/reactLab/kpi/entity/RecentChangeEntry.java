@@ -16,6 +16,8 @@ import java.util.Date;
 @Data
 @Table("recent_change_entry")
 public class RecentChangeEntry {
+    @Id
+    Long id;
     String user1;
     String title;
     Timestamp datetime;

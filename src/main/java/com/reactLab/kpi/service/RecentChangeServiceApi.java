@@ -10,7 +10,7 @@ public interface RecentChangeServiceApi {
 
     Flux<RecentChangeEntry> findAll();
 
-    Mono<MostActiveDto> findMostActive(int days);
+    Mono<MostActiveDto> findMostActive();
 
     Mono<Void> deleteAll();
 }

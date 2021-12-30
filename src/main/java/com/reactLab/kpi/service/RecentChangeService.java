@@ -26,7 +26,7 @@ public class RecentChangeService implements RecentChangeServiceApi {
     }
 
     @Override
-    public Mono<MostActiveDto> findMostActive(int days) {
+    public Mono<MostActiveDto> findMostActive() {
         return recentChangeRepository.findMostActive();
     }
 
