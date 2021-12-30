@@ -40,7 +40,7 @@ public class WikiStatService {
     }
 
     public Flux<MostActiveDto> mostActiveUser(int days) {
-        recentChangeServiceApi.deleteAll();
+        recentChangeServiceApi.deleteAll().subscribe();
         return webClient.get()
                 .uri("https://stream.wikimedia.org/v2/stream/recentchange?since" + (System.currentTimeMillis()-DAY_IN_MS*days))
                 .retrieve()

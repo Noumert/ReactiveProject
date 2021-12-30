@@ -60,6 +60,7 @@ public class InfoResource {
 
     @GetMapping(value = "/mostActive/{days}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<?> mostActiveUserStream(@PathVariable int days) {
-        return wikiStatService.mostActiveUser(days).replay(30).autoConnect(0);
+        return wikiStatService.mostActiveUser(days).replay(30)
+                .autoConnect(0);
     }
 }

@@ -11,9 +11,9 @@ import reactor.core.publisher.Mono;
 public interface RecentChangeRepository extends ReactiveCrudRepository<RecentChangeEntry,Long> {
     @Query(
             value = """
-                            SELECT user1 as user, count(*) as changes
+                            SELECT user1, count(*) as changes
                             FROM recent_change_entry
-                            group by user
+                            group by user1
                             ORDER BY changes DESC
                             LIMIT 1
                             """
