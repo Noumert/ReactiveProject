@@ -40,13 +40,12 @@ public class WikiStatService {
     }
 
     public Flux<MostActiveDto> mostActiveUser(int days) {
-        recentChangeServiceApi.deleteAll().subscribe();
         return webClient.get()
                 .uri("https://stream.wikimedia.org/v2/stream/recentchange?since" + (System.currentTimeMillis()-DAY_IN_MS*days))
                 .retrieve()
                 .bodyToFlux(RecentChange.class)
                 .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofMillis(500)))
-                .flatMap(r->recentChangeServiceApi.save(new RecentChangeEntry(r.getUser(),r.getTitle(), Date.from(r.getMeta().getDt().toInstant()))))
+                .flatMap(r->recentChangeServiceApi.save(new RecentChangeEntry(r.getUser(),r.getTitle(), Timestamp.valueOf(r.getMeta().getDt().toLocalDateTime()))))
                 .onBackpressureLatest()
                 .concatMap(e -> recentChangeServiceApi.findMostActive(days), 1)
                 .onErrorContinue((t, e) -> {
